@@ -1,35 +1,55 @@
 import firebase_admin
 from firebase_admin import (credentials, firestore)
 
-# Making a function to be able to export
-def connect_to_firestore():
+def firstconnect_to_firestore():
     # Initialize Firestore with your service account key
-    cred = credentials.Certificate(r"C:\Users\lc201\Documents\Python Project\Sensor-Firestore\save-a-slot-firebase-adminsdk-xeee6-864bff52bb.json")
+    cred = credentials.Certificate(
+        r"C:\Users\lc201\Documents\Python Project\Sensor-Firestore\save-a-slot-firebase-adminsdk-xeee6-864bff52bb.json")
     firebase_admin.initialize_app(cred)
 
     # Now you can interact with your Firestore database
     db = firestore.client()
     return db
 
+def connect_to_firestore():
+    # need to call the database again without initializing it once more
+    db = firestore.client()
+    return db
 
-def add_parking_slot_data(slot_id, availability, location):
-    db = connect_to_firestore()
-    # Reference to the parkingslots collection
+def get_parking_slot_data(slot_id):
+    db = firstconnect_to_firestore()
+    slot_id = "slot22"
+    # Reference to the specific document in the ParkingSlots collection
     doc_ref = db.collection(u'ParkingSlots').document(slot_id)
 
-    # Data to send to Firestore
-    data = {
-        u'availability': availability,
-        u'location': location,
-        u'timestamp': firestore.SERVER_TIMESTAMP  # adds the server timestamp
-    }
+    try:
+        # Retrieve the document data
+        doc = doc_ref.get()
+        if doc.exists:
+            data = doc.to_dict()
+            return data
+        else:
+            print(f"No document found with ID: {slot_id}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
-    # Add data to Firestore
-    doc_ref.set(data)
-    print(f"Data added to document with ID: {slot_id}")
+def checking_availability(slot_id):
+    slot_id = "slot22"
+    db = connect_to_firestore()
+    # Reference to the specific document in the ParkingSlots collection
+    doc_ref = db.collection(u'ParkingSlots').document(slot_id)
 
+    try:
+        # Retrieve the document data
+        doc = doc_ref.get()
+        if doc.exists:
+            # Print the document data
+            doc.to_dict()
+            return doc.to_dict()
+        else:
+            print(f"No document found with ID: {slot_id}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
-# Example usage:
-add_parking_slot_data("slot22", "available", "Zone A")
 
 

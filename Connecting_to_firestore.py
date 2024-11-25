@@ -17,8 +17,7 @@ def connect_to_firestore():
     return db
 
 def get_parking_slot_data(slot_id):
-    db = firstconnect_to_firestore()
-    slot_id = "slot22"
+    db = connect_to_firestore()
     # Reference to the specific document in the ParkingSlots collection
     doc_ref = db.collection(u'ParkingSlots').document(slot_id)
 
@@ -34,7 +33,6 @@ def get_parking_slot_data(slot_id):
         print(f"An error occurred: {e}")
 
 def checking_availability(slot_id):
-    slot_id = "slot22"
     db = connect_to_firestore()
     # Reference to the specific document in the ParkingSlots collection
     doc_ref = db.collection(u'ParkingSlots').document(slot_id)

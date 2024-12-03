@@ -1,4 +1,4 @@
-from Connecting_to_firestore import get_parking_slot_data, checking_availability, firstconnect_to_firestore
+from Connecting_to_firestore import , checking_availability, firstconnect_to_firestore
 from Sensor_led import control_arduino_led_red, control_arduino_led_green, control_arduino_led_red2, control_arduino_led_green2
 
 firstconnect_to_firestore()
